@@ -1,5 +1,3 @@
-**Chart-Wizard**
-
 ---
 
 ## Overview
