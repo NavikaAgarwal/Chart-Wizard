@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Convert CSV files to Charts</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="chartMenu">
+      <p id="text">Here's your data in a completely new format !</p>
+    </div>
+    <div class="chartCard">
+      <div class="chartBox">
+        <canvas id="myChart"></canvas>
+      </div>
+
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"
+        integrity="sha512-M7nHCiNUOwFt6Us3r8alutZLm9qMt4s9951uo8jqO4UwJ1hziseL6O3ndFyigx6+LREfZqnhHxYjKRJ8ZQ69DQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+      ></script>
+    </div>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.umd.min.js"
+    ></script>
+    <script>
+      const chartData =
+        "https://raw.githubusercontent.com/BhumicaPG/ChartWizard/main/datademo.csv";
+      const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+      //parse the file from CSV to JSON
+      d3.csv(chartData).then(function (datapoints) {
+        console.log(datapoints);
+        const cost = [];
+        const profit = [];
+        const revenue = [];
+
+        for (i = 0; i < datapoints.length; i++) {
+          cost.push(datapoints[i].cost);
+          profit.push(datapoints[i].profit);
+          revenue.push(datapoints[i].revenue);
+        }
+        console.log(datapoints.columns);
+        const labels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        // setup
+        const data = {
+          labels: labels,
+          datasets: [
+            {
+              label: datapoints.columns[0],
+              data: cost,
+              backgroundColor: ["rgba(255, 26, 104, 0.2)"],
+              borderColor: ["rgba(255, 26, 104, 1)"],
+              borderWidth: 1,
+            },
+            {
+              label: datapoints.columns[1],
+              data: profit,
+              backgroundColor: ["rgba(54, 162, 235, 0.2)"],
+              borderColor: ["rgba(54, 162, 235, 1)"],
+              borderWidth: 1,
+            },
+            {
+              label: datapoints.columns[2],
+              data: revenue,
+              backgroundColor: ["rgba(75, 192, 192, 0.2)"],
+              borderColor: ["75, 192, 192, 1)"],
+              borderWidth: 1,
+            },
+          ],
+        };
+
+        // config
+        const config = {
+          type: "bar",
+          data,
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        };
+
+        // render init block
+        const myChart = new Chart(document.getElementById("myChart"), config);
+
+        // Instantly assign Chart.js version
+        const chartVersion = document.getElementById("chartVersion");
+        chartVersion.innerText = Chart.version;
+      });
+    </script>
+  </body>
+</html>
